@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import selfGuide.model.service.SelfGuideCommentService;
 import selfGuide.model.vo.SelfGuideComment;
 
@@ -33,7 +35,11 @@ public class GuideCommentAddServlet extends HttpServlet {
 		int selfNo = Integer.parseInt(request.getParameter("selfNo"));
 		String memberId = request.getParameter("memberId");
 		
-		int result = new SelfGuideCommentService().commentWrite(comment, selfNo, memberId);
+		SelfGuideComment commentOne = new SelfGuideCommentService().commentWrite(comment, selfNo, memberId);
+		
+		response.setContentType("application/json; charset=UTF-8");
+		new Gson().toJson(commentOne, response.getWriter());
+		
 	
 	}
 

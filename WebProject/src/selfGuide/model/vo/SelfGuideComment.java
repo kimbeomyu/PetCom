@@ -1,13 +1,21 @@
 package selfGuide.model.vo;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class SelfGuideComment {
 	private String memberId;
 	private String scommentText;
 	private Date scommentDate;
 	private int selfNo;
+	ArrayList<SelfGuideComment> comment;
 	
+	public ArrayList<SelfGuideComment> getComment() {
+		return comment;
+	}
+	public void setComment(ArrayList<SelfGuideComment> comment) {
+		this.comment = comment;
+	}
 	public String getMemberId() {
 		return memberId;
 	}

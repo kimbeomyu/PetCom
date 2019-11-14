@@ -1,6 +1,7 @@
 package selfGuide.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,8 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import selfGuide.model.service.SelfGuideCommentService;
 import selfGuide.model.service.SelfGuideService;
 import selfGuide.model.vo.SelfGuide;
+import selfGuide.model.vo.SelfGuideComment;
 
 /**
  * Servlet implementation class SelfGuideDateil
@@ -35,7 +38,10 @@ public class SelfGuideDateil extends HttpServlet {
 		new SelfGuideService().viewCount(selfNo);
 
 		SelfGuide guideOne = new SelfGuideService().detailGuide(selfNo);
+		SelfGuideComment commentList = new SelfGuideCommentService().selectCommentList(selfNo); // 세부창으로 가기전에 댓글리스트 받아오려고 만들어줬음
+		
 		RequestDispatcher view = request.getRequestDispatcher("/views/selfGuide/selfGuideDetail.jsp");
+		request.setAttribute("commentList", commentList);
 		request.setAttribute("guideOne", guideOne);
 		view.forward(request, response);
 	}
