@@ -195,6 +195,7 @@
 					}	
 					for(var i in data) {
 						var guideOne = data[i];
+						html += "<a href='/selfGuideDateil?selfNo="+guideOne.selfNo+"'>";
 						html += "<div id='image-wrap'>";
 						html += "<img src='/upload/photo/"+guideOne.photoRenameFilename+"' width='300px'>";
 						html += "</div>";
@@ -202,7 +203,7 @@
 						html += "<h2 class='p-title'>"+guideOne.selfTitle +"</h2>";
 						html += "<p class='p-memberId'>"+guideOne.writerId +"</p>";
 						html += "<p class='p-views'>"+guideOne.selfViews+"</p>";
-						html += "<p class='p-likes'>"+guideOne.selfLike+"</p></div>";
+						html += "<p class='p-likes'>"+guideOne.selfLike+"</p></div></a>";
 					}
 					$("#photo-post").append(html);
 						

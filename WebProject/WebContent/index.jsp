@@ -14,6 +14,7 @@
 		<%=mOne.getMember_ID() %> 야 반가워
 		<a href="/views/selfGuide/write.jsp">글쓰기</a>
 		<a href="/selfGuideList">셀프가이드</a>
+		<a href="/logout">로그아웃</a>
 	
 <% } else { %>
 	<a href="/views/member/login.jsp"> 로그인  </a>

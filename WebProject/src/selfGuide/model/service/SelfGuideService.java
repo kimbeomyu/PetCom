@@ -39,4 +39,73 @@ public class SelfGuideService {
 		JDBCTemplate.close(conn);
 		return guideList;
 	}
+	
+	public SelfGuide detailGuide(int selfNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		SelfGuide guideOne = new SelfGuideDao().detailGuide(conn, selfNo);
+		JDBCTemplate.close(conn);
+		return guideOne;
+	}
+	
+	
+	// 좋아요수
+	public int likeTotalCount(int selfNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int total = new SelfGuideDao().likeTotalCount(conn, selfNo); // 게시물의 좋아요수 카운트
+		int totalUpdate = new SelfGuideDao().totalUpdate(conn, selfNo, total); // self_guide테이블의 like컬럼에 좋아요수 업데이트
+		
+		if(totalUpdate>0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return total;
+	}
+	
+	// 좋아요가 있으면 삭제 없으면 추가하는 메소드
+	public int likeCount(String memberId, int selfNo) {
+		
+		Connection conn = JDBCTemplate.getConnection();
+		
+		// 존재하는지 않하는지 알기위해 체크하는 놈
+		int result = new SelfGuideDao().likeCountCheck(conn, memberId, selfNo);
+		
+		// 만약 존재하고있다면
+		// 삭제해버린다 ㅡㅡ
+		if (result>0) {
+			int result2 = new SelfGuideDao().likeDelete(conn, memberId, selfNo);
+			if(result2>0) {
+				JDBCTemplate.commit(conn);
+			} else {
+				JDBCTemplate.rollback(conn);
+			}
+			JDBCTemplate.close(conn);
+			return result2;
+			
+		// 존재안하면 추가해줄게 ㅋ
+		} else {
+			int result2 = new SelfGuideDao().likeInsert(conn, memberId, selfNo);
+			if(result2>0) {
+				JDBCTemplate.commit(conn);
+			} else {
+				JDBCTemplate.rollback(conn);
+			}
+			JDBCTemplate.close(conn);
+			return result2;
+		}
+	}
+	
+	public void viewCount(int selfNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = new SelfGuideDao().viewCount(conn, selfNo);
+		
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+	}
 }
