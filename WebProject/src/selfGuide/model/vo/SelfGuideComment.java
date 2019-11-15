@@ -8,6 +8,14 @@ public class SelfGuideComment {
 	private String scommentText;
 	private Date scommentDate;
 	private int selfNo;
+	private int scommentNo;
+	
+	public int getScommentNo() {
+		return scommentNo;
+	}
+	public void setScommentNo(int scommentNo) {
+		this.scommentNo = scommentNo;
+	}
 	ArrayList<SelfGuideComment> comment;
 	
 	public ArrayList<SelfGuideComment> getComment() {

@@ -13,7 +13,7 @@ public class SelfGuideCommentDao {
 	
 	public int commentWrite(Connection conn, String comment, int selfNo, String memberId) {
 		
-		String query = "INSERT INTO SELF_GUIDE_COMMENT VALUES(?, ?, SYSDATE, ?)";
+		String query = "INSERT INTO SELF_GUIDE_COMMENT VALUES(?, ?, SYSDATE, ?, SEQ_SCOMMENT_NO.NEXTVAL)";
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
@@ -50,6 +50,7 @@ public class SelfGuideCommentDao {
 				commentOne.setScommentText(rset.getString("SCOMMENT_TEXT"));
 				commentOne.setScommentDate(rset.getDate("SCOMMENT_DATE"));
 				commentOne.setSelfNo(rset.getInt("SELF_NO"));
+				commentOne.setScommentNo(rset.getInt("SCOMMENT_NO"));
 				commentList.add(commentOne);
 			}
 		} catch (SQLException e) {
@@ -81,6 +82,7 @@ public class SelfGuideCommentDao {
 				commentOne.setScommentText(rset.getString("SCOMMENT_TEXT"));
 				commentOne.setScommentDate(rset.getDate("SCOMMENT_DATE"));
 				commentOne.setSelfNo(rset.getInt("SELF_NO"));
+				commentOne.setScommentNo(rset.getInt("SCOMMENT_NO"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -91,4 +93,24 @@ public class SelfGuideCommentDao {
 		} 
 		return commentOne;
 	}
+	
+	public int guideCommentDelete(Connection conn, int scommentNo) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "DELETE FROM SELF_GUIDE_COMMENT WHERE SCOMMENT_NO = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, scommentNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
+	
 }
