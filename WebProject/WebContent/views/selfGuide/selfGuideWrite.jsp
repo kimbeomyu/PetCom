@@ -44,7 +44,7 @@
 	</script>
 
 	<form action="/insertGuide" method="post" enctype="multipart/form-data">
-		작성자ID : <input type="text" name="writerId" value=<%=member.getMember_ID() %> readonly required> <br>
+		작성자ID : <input type="text" name="writerId" value="${member.member_ID}" readonly required> <br>
 		제목 : <input type="text" name="title"> <br>
 		<input type="file" name="up_file" onchange="fn_loadImg(this)" required> <br>
 		<div> <img id="img-viewer" width="350"></div>

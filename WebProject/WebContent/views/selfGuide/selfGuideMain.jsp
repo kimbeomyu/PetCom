@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
-<% int total = (Integer)request.getAttribute("total"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -208,7 +206,7 @@
 					$("#photo-post").append(html);
 						
 					// 마지막 게시물이라면 fn_more을 비활성화하기위해사용
-					var total= <%=total %>;
+					var total= "${total}";
 					if(start>=total) {
 						
 					}

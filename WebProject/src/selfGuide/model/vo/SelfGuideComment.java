@@ -9,6 +9,7 @@ public class SelfGuideComment {
 	private Date scommentDate;
 	private int selfNo;
 	private int scommentNo;
+	private ArrayList<SelfGuideComment> comment;
 	
 	public int getScommentNo() {
 		return scommentNo;
@@ -16,7 +17,6 @@ public class SelfGuideComment {
 	public void setScommentNo(int scommentNo) {
 		this.scommentNo = scommentNo;
 	}
-	ArrayList<SelfGuideComment> comment;
 	
 	public ArrayList<SelfGuideComment> getComment() {
 		return comment;

@@ -1,19 +1,7 @@
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="selfGuide.model.vo.SelfGuideComment"%>
-<%@page import="java.util.*"%>
-<%@page import="member.vo.Member"%>
-<%@page import="selfGuide.model.vo.SelfGuide"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	SelfGuide guideOne = (SelfGuide) request.getAttribute("guideOne");
-	Member mOne = (Member) session.getAttribute("member");
-	
-	// request로는 객체를 받을도 형변환이 되지않음
-	// 그걸 고쳐주기위해 사용하는 방법 심화과정임 알아두면 개꿀이덕
-	SelfGuideComment commentList =	(SelfGuideComment)request.getAttribute("commentList");
-	ArrayList<SelfGuideComment> commentList2 = commentList.getComment(); 
-%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -25,31 +13,31 @@
 <body>
 	<h2>
 		제목 :
-		<%-- ${guideOne.selfTitle} --%><%=guideOne.getSelfTitle()%></h2>
-	<img src="/upload/photo/<%=guideOne.getPhotoRenameFilename()%>"
+		${guideOne.selfTitle}</h2>
+	<img src="/upload/photo/${guideOne.photoRenameFilename}"
 		width="300px" height="300px">
 
 	<h6>
 		글번호 :
-		<%=guideOne.getSelfNo()%>
+		${guideOne.selfNo}
 		/ 작성자 ID :
-		<%=guideOne.getWriterId()%>
+		${guideOne.writerId}
 		/ 작성 날짜 :
-		<%=guideOne.getSelfDate()%></h6>
+		${guideOne.selfDate}</h6>
 		/ 내용 :
-		<%=guideOne.getSelfContent() %> <br>
+		${guideOne.selfContent} <br>
 		/ 조회수 :
-		<%=guideOne.getSelfViews()%>
+		${guideOne.selfViews}
 		/ 좋아요 :
 
 	<span id="like">
-		<%=guideOne.getSelfLike()%>
+		${guideOne.selfLike}
 	</span>
 	<button onclick="fn_like()">좋아?</button>
 	<hr>
 
 
-	comment : <input type="textarea" id="comment" placeholder="댓글을 작성하세요" onkeyup="enterkey()">
+	comment : <input type="text" id="comment" placeholder="댓글을 작성하세요" onkeyup="enterkey()">
 	<input type="submit" value="등록" onclick="fn_commentAdd()"/>
 	
 	<a href="/logout">로그아웃</a> 
@@ -60,18 +48,18 @@
 			<th>작성자ID</th>
 			<th>작성일자</th>
 		</tr>
-	<% for(SelfGuideComment comment : commentList2) {%>
-		<tr>
-			<input type='hidden' value='<%=comment.getScommentNo() %>' id='<%=comment.getScommentNo() %>'/>
-			<td><%=comment.getScommentText() %></td>
-			<td><%=comment.getMemberId() %></td>
-			<td><%=comment.getScommentDate() %></td>
+		<c:forEach items="${commentList.comment }" var="commentOne">
+			<tr>
+				<input type="hidden" value="${commentOne.scommentNo }" id="${commentOne.scommentNo }"/>
+				<td>${commentOne.scommentText }</td>
+				<td>${commentOne.memberId }</td>
+				<td>${commentOne.scommentDate }</td>
+			<c:if test="${commentOne.memberId == member.member_ID }">
+				<td><button onclick="fn_commentDelete(${commentOne.scommentNo })">삭제</button></td>
+			</c:if>
+			</tr>
+		</c:forEach>
 
-		<% if(comment.getMemberId().equals(mOne.getMember_ID())) { %>
-			<td><button onclick="fn_commentDelete(<%=comment.getScommentNo() %>)">삭제</button></td>
-		<%} %>
-		</tr>
-	<% } %>
 	</table>
 
 	<script>
@@ -85,8 +73,8 @@
 		//좋아요 누르면 반응하는 함수
 		function fn_like() {
 			var param = {
-				selfNo : <%=guideOne.getSelfNo()%>,
-				memberId :"<%=mOne.getMember_ID()%>"
+				selfNo : "${guideOne.selfNo}",
+				memberId :"${member.member_ID}"
 			}
 
 			$.ajax({
@@ -106,8 +94,8 @@
 			
 			var param = {
 				comment: $("#comment").val(),
-				memberId: "<%=mOne.getMember_ID()%>",
-				selfNo: <%=guideOne.getSelfNo()%>
+				memberId: "${member.member_ID}",
+				selfNo: "${guideOne.selfNo}"
 			}
 			
 			
@@ -126,7 +114,7 @@
 					html += "<td>"+commentOne.scommentDate.substr(8,4)+"-"+commentOne.scommentDate.substr(0,2)
 					              +"-"+commentOne.scommentDate.substr(4,2)+"</td>";
 					
-					if(commentOne.memberId == "<%=mOne.getMember_ID() %>") {
+					if(commentOne.memberId == "${member.member_ID}") {
 						html +="<td><button onclick='fn_commentDelete("+commentOne.scommentNo+")'>삭제</button></td>";
 					}
 					html += "</tr>";
@@ -148,7 +136,7 @@
 			
 			var param = {
 					scommentNo: scommentNo,
-					selfNo: <%=guideOne.getSelfNo()%>
+					selfNo: "${guideOne.selfNo}"
 			}
 			
 			$.ajax({
@@ -168,9 +156,10 @@
 						html += "<tr><td>" +commentOne.scommentText +"</td>";
 						html += "<input type='hidden' value='"+commentOne.scommentNo+"' id='"+commentOne.scommentNo+"'/>";
 						html += "<td>"+commentOne.memberId+"</td>";
-						html += "<td>"+commentOne.scommentDate+"</td>";
+						html += "<td>"+commentOne.scommentDate.substr(8,4)+"-"+commentOne.scommentDate.substr(0,2)
+			              +"-"+commentOne.scommentDate.substr(4,2)+"</td>";
 						
-						if(commentOne.memberId == "<%=mOne.getMember_ID() %>") {
+						if(commentOne.memberId == "${member.member_ID}") {
 							html +="<td><button onclick='fn_commentDelete("+commentOne.scommentNo+")'>삭제</button></td>";
 						}
 						html += "</tr>";
