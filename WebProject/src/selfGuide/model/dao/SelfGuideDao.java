@@ -260,4 +260,49 @@ public class SelfGuideDao {
 		}
 		return result;
 	}
+	
+	public int guideRemove(Connection conn, int selfNo) {
+		
+		String query = "DELETE FROM SELF_GUIDE WHERE SELF_NO =?";
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, selfNo);
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	public int updateSelfGuide(Connection conn, SelfGuide guideOne) {
+		
+		String query = "UPDATE SELF_GUIDE SET SELF_TITLE=?, SELF_CONTENT=?, PHOTO_ORIGINAL_FILENAME=?, PHOTO_RENAME_FILENAME=? WHERE SELF_NO=?";
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, guideOne.getSelfTitle());
+			pstmt.setString(2, guideOne.getSelfContent());
+			pstmt.setString(3, guideOne.getPhotoOriginalFilename());
+			pstmt.setString(4, guideOne.getPhotoRenameFilename());
+			pstmt.setInt(5, guideOne.getSelfNo());
+			result=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
+	}
 }

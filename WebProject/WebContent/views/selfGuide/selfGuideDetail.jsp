@@ -18,12 +18,26 @@
 		width="300px" height="300px">
 
 	<h6>
+	
 		글번호 :
 		${guideOne.selfNo}
 		/ 작성자 ID :
 		${guideOne.writerId}
 		/ 작성 날짜 :
-		${guideOne.selfDate}</h6>
+		${guideOne.selfDate}
+	</h6 >
+	<c:if test="${guideOne.writerId ==  member.member_ID}" >
+		<form action = "/selfGuideLoad" >
+			<input type="hidden" name="selfNo" value="${guideOne.selfNo}">
+			<input type="submit" value="수정"/>
+		</form>
+		<form action = "/guideRemove" >
+			<input type="hidden" name="selfNo" value="${guideOne.selfNo }">
+			<input type="hidden" name="fileName" value="${guideOne.photoRenameFilename}">
+			<input type="submit" value="삭제" onclick="return fn_check()">
+		</form>
+	</c:if>
+		
 		/ 내용 :
 		${guideOne.selfContent} <br>
 		/ 조회수 :
@@ -63,6 +77,14 @@
 	</table>
 
 	<script>
+	// 삭제할건지 물어봐주는거 재확인
+	function fn_check() {
+		  if (confirm("정말 삭제하시겠습니까?")){
+		    	return true;
+			 } else {
+				 return false;
+		 	}
+		}
 	
 	// 엔터키 누르면 실행될 이벤트를 인식시켜주는 함수
 	function enterkey() {

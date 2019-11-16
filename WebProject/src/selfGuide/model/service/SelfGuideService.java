@@ -108,4 +108,26 @@ public class SelfGuideService {
 		}
 		JDBCTemplate.close(conn);
 	}
+	
+	public int guideRemove(int selfNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = new SelfGuideDao().guideRemove(conn, selfNo);
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		return result;
+	}
+	
+	public int updateSelfGuide(SelfGuide guideOne) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = new SelfGuideDao().updateSelfGuide(conn, guideOne);
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		return result;
+	}
 }

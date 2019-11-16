@@ -166,13 +166,19 @@
 			// 5px의 오차범위를 두어 실행되도록 함
 		$(window).scroll(function() {
 			
-			var scrolltop = parseInt($(window).scrollTop()); // 스크롤의 위치에 따라 변하는 값(세로좌표) 맨위 0 맨아래도달시 max
+			var scrolltop = $(window).scrollTop(); // 스크롤의 위치에 따라 변하는 값(세로좌표) 맨위 0 맨아래도달시 max
 			var height_win = $(window).height(); // 화면에 보여지는 창의 길이
 			var height = $("#guide-content").height(); // 문서의 길이
 			
-			if(scrolltop >= height-height_win) {
-				fn_more(start)
+			if(height-height_win+10 >= Math.round(scrolltop) && Math.round(scrolltop) >= height-height_win) {
+				console.log(scrolltop);
+				console.log(height_win);
+				console.log(height);
+				console.log(height-height_win);
+				
+				fn_more(start);
 				start++;
+				
 			}
 		});
 		

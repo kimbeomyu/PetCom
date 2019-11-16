@@ -42,8 +42,8 @@ public class MoreGuideServlet extends HttpServlet {
 			start = 1;
 			len =8;
 		} else {
-			start = start+(7*(start-1));
-			len = start*8;
+			start = start+(7*(start-1)); // 2+7*1 = 9 3+7*2=17
+			len = start+7; // 16 24
 		}
 		
 		

@@ -1,7 +1,7 @@
 <%@page import="member.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<% Member member = (Member)session.getAttribute("member"); %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +44,7 @@
 	</script>
 
 	<form action="/insertGuide" method="post" enctype="multipart/form-data">
-		작성자ID : <input type="text" name="writerId" value="${member.member_ID}" readonly required> <br>
+		작성자ID : <input type="text" name="writerId" value="${sessionScope.member.member_ID}" readonly required> <br>
 		제목 : <input type="text" name="title"> <br>
 		<input type="file" name="up_file" onchange="fn_loadImg(this)" required> <br>
 		<div> <img id="img-viewer" width="350"></div>
