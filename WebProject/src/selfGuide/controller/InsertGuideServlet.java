@@ -70,7 +70,7 @@ public class InsertGuideServlet extends HttpServlet {
 		// DB로 보내 작업을 수행한후 결과를 리턴받는곳
 		int result = new SelfGuideService().insertSelfGuide(guideOne);
 		if(result>0) {
-			System.out.println("/selfGuideList");
+			response.sendRedirect("/views/selfGuide/selfGuideMain.jsp");
 		} else {
 			System.out.println("실패");
 		}
